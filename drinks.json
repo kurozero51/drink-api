@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Moose",
+    "description": "Very strong Moose energy drink"
+  },
+  {
+    "id": 2,
+    "name": "Tea",
+    "description": "Hot drink made by infusing tea leaves"
+  },
+  {
+    "id": 3,
+    "name": "Monster Energy Pink",
+    "description": "limited POWAH"
+  },
+  {
+    "id": 4,
+    "name": "Speed",
+    "description": "iShowspeeds fav drink"
+  }
+]

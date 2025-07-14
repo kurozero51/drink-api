@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Drink App</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <h2>Welcome to my Drinks db lol</h2>
+    <h1 id="formTitle">Add a New Drink</h1>
+    <form id="drinkForm">
+        <input type="hidden" id="drinkId"> <!-- Hidden input for editing -->
+
+        <label for="name">Drink Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br><br>
+
+        <button type="submit" id="submitButton">Add Drink</button>
+    </form>
+
+    <p id="response"></p>
+
+    <h2>Current Drinks</h2>
+    <ul id="drinkList"></ul>
+
+    <script>
+        let editingId = null;
+
+        async function loadDrinks() {
+            const res = await fetch('/drinks');
+            const drinks = await res.json();
+
+            const list = document.getElementById('drinkList');
+            list.innerHTML = '';
+
+            drinks.forEach(drink => {
+                const item = document.createElement('li');
+                item.textContent = `${drink.name} — ${drink.description} `;
+
+                // Delete button
+                const delBtn = document.createElement('button');
+                delBtn.textContent = '❌';
+                delBtn.onclick = async () => {
+                    await fetch(`/drinks/${drink.id}`, { method: 'DELETE' });
+                    await loadDrinks();
+                };
+
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.textContent = '✏️';
+                editBtn.style.marginLeft = '5px';
+                editBtn.onclick = () => {
+                    // Load drink into form
+                    document.getElementById('formTitle').innerText = 'Edit Drink';
+                    document.getElementById('submitButton').innerText = 'Update Drink';
+                    document.getElementById('name').value = drink.name;
+                    document.getElementById('description').value = drink.description;
+                    document.getElementById('drinkId').value = drink.id;
+                    editingId = drink.id;
+                };
+
+                item.appendChild(editBtn);
+                item.appendChild(delBtn);
+                list.appendChild(item);
+            });
+        }
+
+        document.getElementById('drinkForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const id = document.getElementById('drinkId').value;
+
+            let response;
+            if (editingId) {
+                // Update (PUT)
+                response = await fetch(`/drinks/${editingId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, description })
+                });
+            } else {
+                // Create (POST)
+                response = await fetch('/drinks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, description })
+                });
+            }
+
+            const data = await response.json();
+            document.getElementById('response').innerText =
+                response.ok ? (editingId ? `Updated: ${data.name}` : `Added: ${data.name}`) : `Error: ${data.message}`;
+
+            // Reset form
+            document.getElementById('drinkForm').reset();
+            document.getElementById('formTitle').innerText = 'Add a New Drink';
+            document.getElementById('submitButton').innerText = 'Add Drink';
+            editingId = null;
+
+            await loadDrinks();
+        });
+
+        loadDrinks();
+    </script>
+
+
+</body>
+
+</html>
