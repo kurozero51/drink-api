@@ -14,11 +14,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/clea51/drink-api.git"
+    "url": "git+https://github.com/kurozero51/drink-api.git"
   },
   "bugs": {
-    "url": "https://github.com/clea51/drink-api/issues"
+    "url": "https://github.com/kurozero51/drink-api/issues"
   },
-  "homepage": "https://github.com/clea51/drink-api#readme",
+  "homepage": "https://github.com/kurozero51/drink-api#readme",
   "description": ""
 }

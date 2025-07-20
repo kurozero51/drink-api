@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f7f7f7;
+    background: #c5459f;
     padding: 2rem;
     max-width: 700px;
     margin: auto;
@@ -13,7 +13,7 @@ h2 {
 }
 
 form {
-    background: #ffffff;
+    background: #da6161;
     padding: 1rem 1.5rem;
     border-radius: 8px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -54,7 +54,7 @@ ul {
 }
 
 li {
-    background: #fff;
+    background: #951e7d;
     margin-bottom: 0.5rem;
     padding: 0.75rem 1rem;
     border-radius: 6px;
@@ -76,8 +76,21 @@ button:last-child:hover {
     background: #c0392b;
 }
 
+ul li {
+    color: #d49fa0;
+    /* Example: yellow text */
+}
+
 #response {
     font-weight: bold;
     margin-top: 1rem;
+}
+
+#response.success {
     color: green;
+}
+
+#response.error {
+    color: red;
+
 }

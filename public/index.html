@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <h2>Welcome to my Drinks db lol</h2>
-    <h1 id="formTitle">Add a New Drink</h1>
+    <h1>Welcome to my Drinks db lol</h1>
+    <h2 id="formTitle">Add a New Drink</h2>
     <form id="drinkForm">
         <input type="hidden" id="drinkId"> <!-- Hidden input for editing -->
 
@@ -96,7 +96,17 @@
 
             const data = await response.json();
             document.getElementById('response').innerText =
-                response.ok ? (editingId ? `Updated: ${data.name}` : `Added: ${data.name}`) : `Error: ${data.message}`;
+                responseBox = document.getElementById('response');
+            responseBox.classList.remove('success', 'error'); // clear old class
+
+            if (response.ok) {
+                responseBox.innerText = `Added: ${data.name}`;
+                responseBox.classList.add('success');
+            } else {
+                responseBox.innerText = `Error: ${data.message}`;
+                responseBox.classList.add('error');
+            }
+
 
             // Reset form
             document.getElementById('drinkForm').reset();

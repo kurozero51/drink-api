@@ -28,16 +28,40 @@ app.get('/drinks', (req, res) => {
 
 // POST a new drink
 app.post('/drinks', (req, res) => {
+    const { name, description } = req.body;
+
+    // Validate required fields
+    if (!name || !description || name.trim() === '' || description.trim() === '') {
+        return res.status(400).json({ message: 'Name and description are required.' });
+    }
+
+    const trimmedName = name.trim();
+    const trimmedDescription = description.trim();
+
+    // Check for duplicate name
+    const nameExists = drinks.some(drink => drink.name.toLowerCase() === trimmedName.toLowerCase());
+    if (nameExists) {
+        return res.status(400).json({ message: 'A drink with that name already exists.' });
+    }
+
+    // Check for duplicate description
+    const descriptionExists = drinks.some(drink => drink.description.toLowerCase() === trimmedDescription.toLowerCase());
+    if (descriptionExists) {
+        return res.status(400).json({ message: 'A drink with that description already exists.' });
+    }
+
     const newDrink = {
         id: nextId++,
-        name: req.body.name,
-        description: req.body.description
+        name: trimmedName,
+        description: trimmedDescription
     };
+
     drinks.push(newDrink);
     saveDrinksToFile();
     res.status(201).json(newDrink);
 
 });
+
 
 // PUT - Update a drink by ID
 app.put('/drinks/:id', (req, res) => {
